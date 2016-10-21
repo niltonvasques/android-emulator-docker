@@ -13,6 +13,6 @@ RUN mksdcard -l sdcard 100M sdcard.img
 RUN echo "no" | android create avd -f -n test -t android-23 --abi default/armeabi-v7a -c sdcard.img 
 
 #Label
-MAINTAINER Catbag <nilton.vasques@openmailbox.org>
+MAINTAINER Nilton Vasques <nilton.vasques@openmailbox.org>
 LABEL Version="1.0" \
       Description="Android emulator environment"
