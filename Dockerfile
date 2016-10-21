@@ -1,4 +1,4 @@
-from catbagdev/android-env:1.2
+FROM catbagdev/android-env:1.2
   
 #Install latest android tools and system images 
 RUN echo y | android update sdk --no-ui --force -a --filter sys-img-armeabi-v7a-android-23 
