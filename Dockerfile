@@ -1,4 +1,4 @@
-FROM catbagdev/android-env:latest
+FROM catbagdev/android-env:1.2
   
 #Install latest android tools and system images 
 RUN echo y | android update sdk --no-ui --force -a --filter sys-img-armeabi-v7a-android-23 
@@ -14,5 +14,5 @@ RUN echo "no" | android create avd -f -n test -t android-23 --abi default/armeab
 
 #Label
 MAINTAINER Nilton Vasques <nilton.vasques@openmailbox.org>
-LABEL Version="1.0" \
+LABEL Version="1.1" \
       Description="Android emulator environment"
