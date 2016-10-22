@@ -2,27 +2,26 @@
 
 ### Usage
 
-```bash
-# Starting emulator
-echo "no" | emulator64-arm -avd test -noaudio -no-window -gpu off -verbose -qemu -usbdevice tablet &
+* Launch, wait and unlock the emulator
 
-git clone https://github.com/niltonvasques/redux-android-sample.git
-cd redux-android-sample
+        docker run --privileged -v /dev/kvm:/dev/kvm --rm niltonvasques/android-emulator:1.3 \ 
+        bash -c "start_emulator && wait_emulator && unlock_emulator"
+      
+* Using with drone.io CI      
 
-# Run unit tests
-./gradlew check --daemon -PdisablePreDex --stacktrace
-
-# Waiting for device be ready
-adb wait-for-device
-A=$(adb shell getprop sys.boot_completed | tr -d '\r')
-while [ "$A" != "1" ]; do
-  sleep 2
-  A=$(adb shell getprop sys.boot_completed | tr -d '\r')
-done
-
-# Unlocking device
-adb shell input keyevent 82
-
-# Running instrumentation tests
-./gradlew cC --daemon -PdisablePreDex --stacktrace
+```yml
+build:
+  image: niltonvasques/android-emulator:1.3
+  privileged: true
+  commands:
+    - cp -a /drone/.gradle /root/ && rm -Rf /drone/.gradle
+    - start_emulator && wait_emulator
+    - ./gradlew check --daemon -PdisablePreDex --stacktrace
+    - ./gradlew assembleDebugAndroidTest --daemon -PdisablePreDex --stacktrace
+    - unlock_emulator
+    - ./gradlew cC --daemon -PdisablePreDex --stacktrace
+    - cp -a /root/.gradle /drone/
+cache:
+  mount:
+    - /drone/.gradle
 ```
