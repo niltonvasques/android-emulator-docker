@@ -1,4 +1,4 @@
-FROM catbagdev/android-env:1.3
+FROM catbagdev/android-env:1.2
   
 #Install latest android tools and system images 
 RUN echo y | android update sdk --no-ui --force -a --filter sys-img-x86-android-22
