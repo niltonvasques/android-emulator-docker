@@ -14,5 +14,5 @@ RUN echo "no" | android create avd -f -n test -t android-24 --abi default/x86 -c
 
 #Label
 MAINTAINER Nilton Vasques <nilton.vasques@openmailbox.org>
-LABEL Version="1.3" \
+LABEL Version="1.2" \
       Description="Android emulator environment"
