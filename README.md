@@ -25,3 +25,7 @@ cache:
   mount:
     - /drone/.gradle
 ```
+
+### Customizations in the image
+
+* [Installing another android SDK](http://stackoverflow.com/questions/26016770/how-to-install-old-version-of-android-build-tools-from-command-line)
