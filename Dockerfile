@@ -1,7 +1,7 @@
 # This Dockerfile creates a android enviroment prepared to run integration tests
 from ubuntu:16.04
 
-RUN apt-get update && apt-get install openjdk-8-jdk git wget -y
+RUN apt-get update && apt-get install openjdk-8-jdk git wget unzip -y
 
 #Install Android
 RUN mkdir /opt/android-sdk-linux && cd /opt/android-sdk-linux
