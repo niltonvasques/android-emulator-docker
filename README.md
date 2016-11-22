@@ -4,8 +4,7 @@
 
 * Launch, wait and unlock the emulator
 
-        docker run --privileged -v /dev/kvm:/dev/kvm --rm niltonvasques/android-emulator:1.3 \ 
-        bash -c "start_emulator && wait_emulator && unlock_emulator"
+        docker run --privileged -v /dev/kvm:/dev/kvm --rm niltonvasques/android-emulator:1.3 bash -c "start_emulator && wait_emulator && unlock_emulator"
       
 * Using with drone.io CI      
 
