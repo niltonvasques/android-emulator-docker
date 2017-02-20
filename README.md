@@ -1,17 +1,17 @@
-## Android Emulator Docker image
+## Android SDK and Emulator Docker image
 
 ### Usage
 
 * Launch, wait and unlock the emulator
 
-        docker run --privileged -v /dev/kvm:/dev/kvm --rm niltonvasques/android-emulator:1.3 \ 
+        docker run --privileged -v /dev/kvm:/dev/kvm --rm catbagdev/android-sdk-and-emulator:0.1.0 \
         bash -c "start_emulator && wait_emulator && unlock_emulator"
-      
-* Using with drone.io CI      
+
+* Usage with Drone CI      
 
 ```yml
 build:
-  image: niltonvasques/android-emulator:1.3
+  image: catbagdev/android-sdk-and-emulator:0.1.0
   privileged: true
   commands:
     - cp -a /drone/.gradle /root/ && rm -Rf /drone/.gradle
