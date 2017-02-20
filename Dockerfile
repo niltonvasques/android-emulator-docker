@@ -20,8 +20,8 @@ ENV PATH $PATH:$ANDROID_HOME/platform-tools
 #Install latest android tools and system images
 RUN echo y | android update sdk --no-ui --force -a --filter sys-img-x86-android-24
 
-# Install dependencies to run android tools 32bits binaries
-RUN apt-get install gcc-multilib -y
+# Install dependencies to run android tools binaries
+RUN apt-get install gcc-multilib libqt5widgets5 -y
 
 # Creating sdcard image
 RUN mksdcard -l sdcard 100M sdcard.img
