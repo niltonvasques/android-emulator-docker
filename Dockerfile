@@ -18,7 +18,7 @@ RUN ( sleep 4 && while [ 1 ]; do sleep 1; echo y; done ) \
 ENV PATH $PATH:$ANDROID_HOME/platform-tools
 
 #Install latest android tools and system images
-RUN echo y | android update sdk --no-ui --force -a --filter sys-img-x86-android-24
+RUN echo y | android update sdk --no-ui --force -a --filter sys-img-x86_64-google_apis-24
 
 # Install dependencies to run android tools binaries
 RUN apt-get install gcc-multilib libqt5widgets5 -y
@@ -27,7 +27,7 @@ RUN apt-get install gcc-multilib libqt5widgets5 -y
 RUN mksdcard -l sdcard 100M sdcard.img
 
 # Creating a emulator with sdcard
-RUN echo "no" | android create avd -f -n test -t android-24 --abi default/x86 -c sdcard.img
+RUN echo "no" | android create avd -f -n test -t android-24 --abi google_apis/x86_64 -c sdcard.img
 
 ADD start_emulator.sh /bin/start_emulator
 RUN chmod +x /bin/start_emulator
@@ -40,5 +40,5 @@ RUN chmod +x /bin/unlock_emulator
 
 #Label
 MAINTAINER Catbag <developer@catbag.com.br>
-LABEL Version="0.1.0" \
+LABEL Version="0.1.1" \
       Description="Android SDK and emulator environment"
