@@ -11,7 +11,7 @@
 
 ```yml
 build:
-  image: catbagdev/android-sdk-and-emulator:0.1.0
+  image: catbagdev/android-sdk-and-emulator:0.1.2
   privileged: true
   commands:
     - cp -a /drone/.gradle /root/ && rm -Rf /drone/.gradle
