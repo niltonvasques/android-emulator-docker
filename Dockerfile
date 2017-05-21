@@ -17,8 +17,9 @@ RUN yes | sdkmanager "build-tools;25.0.3" --verbose
 RUN yes | sdkmanager "extras;android;m2repository" --verbose
 RUN yes | sdkmanager "extras;google;m2repository" --verbose
 
-# Add platform-tools to path
+# Add platform-tools and emulator to path
 ENV PATH $PATH:$ANDROID_HOME/platform-tools
+ENV PATH $PATH:$ANDROID_HOME/emulator
 
 #Install latest android emulator system images
 ENV EMULATOR_IMAGE "system-images;android-24;google_apis;x86_64"
