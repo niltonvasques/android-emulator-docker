@@ -1,7 +1,15 @@
 # This Dockerfile creates a android enviroment prepared to run integration tests
-from ubuntu:16.04
+from debian:jessie
 
-RUN apt-get update && apt-get install openjdk-8-jdk git wget unzip -y
+# Install java 8
+RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | tee /etc/apt/sources.list.d/webupd8team-java.list \
+&& echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | tee -a /etc/apt/sources.list.d/webupd8team-java.list \
+&& apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886 \
+&& echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections \
+&& apt-get update && apt-get install oracle-java8-installer oracle-java8-set-default -y
+
+# Install another dependencies
+RUN apt-get install git wget unzip gcc-multilib libglu1 -y
 
 #Install Android
 ENV ANDROID_HOME /opt/android
@@ -25,8 +33,8 @@ ENV PATH $PATH:$ANDROID_HOME/emulator
 ENV EMULATOR_IMAGE "system-images;android-24;google_apis;x86_64"
 RUN yes | sdkmanager $EMULATOR_IMAGE --verbose
 
-# Install dependencies to run android tools binaries
-RUN apt-get install gcc-multilib libqt5widgets5 -y
+# Copy Qt library files to system folder
+RUN cp -a /opt/android/emulator/lib64/qt/lib/. /usr/lib/x86_64-linux-gnu/
 
 # Creating a emulator with sdcard
 RUN echo "no" | avdmanager -v create avd -n test -k $EMULATOR_IMAGE -c 100M
