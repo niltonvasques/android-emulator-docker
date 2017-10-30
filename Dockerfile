@@ -21,7 +21,7 @@ ENV PATH $PATH:$ANDROID_HOME/tools/bin
 RUN yes | sdkmanager --update --verbose
 RUN yes | sdkmanager "platform-tools" --verbose
 RUN yes | sdkmanager "platforms;android-25" --verbose
-RUN yes | sdkmanager "build-tools;25.0.3" --verbose
+RUN yes | sdkmanager "build-tools;26.0.2" --verbose
 RUN yes | sdkmanager "extras;android;m2repository" --verbose
 RUN yes | sdkmanager "extras;google;m2repository" --verbose
 
