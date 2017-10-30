@@ -1,33 +1,43 @@
 # This Dockerfile creates a android enviroment prepared to run integration tests
-from ubuntu:16.04
+from debian:jessie
 
-RUN apt-get update && apt-get install openjdk-8-jdk git wget -y
+# Install java 8
+RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | tee /etc/apt/sources.list.d/webupd8team-java.list \
+&& echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | tee -a /etc/apt/sources.list.d/webupd8team-java.list \
+&& apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886 \
+&& echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections \
+&& apt-get update && apt-get install oracle-java8-installer oracle-java8-set-default -y
+
+# Install another dependencies
+RUN apt-get install git wget unzip gcc-multilib libglu1 -y
 
 #Install Android
-RUN wget -qO- https://dl.google.com/android/android-sdk_r24.4.1-linux.tgz --show-progress \
-  | tar -xz -C /opt/
-ENV ANDROID_HOME /opt/android-sdk-linux
-ENV PATH $PATH:$ANDROID_HOME/tools
+ENV ANDROID_HOME /opt/android
+RUN wget -O android-tools.zip https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip --show-progress \
+&& unzip android-tools.zip -d $ANDROID_HOME && rm android-tools.zip
+ENV PATH $PATH:$ANDROID_HOME/tools/bin
 
 #Install Android Tools
-ENV SDK_FILTERS platform-tools,android-23,android-24,build-tools-24.0.3,extra-android-m2repository,extra-google-m2repository
-RUN ( sleep 4 && while [ 1 ]; do sleep 1; echo y; done ) \
-	| android update sdk --no-ui --force -a --filter \ $SDK_FILTERS && android update adb
+RUN yes | sdkmanager --update --verbose
+RUN yes | sdkmanager "platform-tools" --verbose
+RUN yes | sdkmanager "platforms;android-25" --verbose
+RUN yes | sdkmanager "build-tools;25.0.3" --verbose
+RUN yes | sdkmanager "extras;android;m2repository" --verbose
+RUN yes | sdkmanager "extras;google;m2repository" --verbose
 
-# Add platform-tools to path
+# Add platform-tools and emulator to path
 ENV PATH $PATH:$ANDROID_HOME/platform-tools
-  
-#Install latest android tools and system images 
-RUN echo y | android update sdk --no-ui --force -a --filter sys-img-x86-android-24
+ENV PATH $PATH:$ANDROID_HOME/emulator
 
-# Install dependencies to run android tools 32bits binaries
-RUN apt-get install gcc-multilib -y 
+#Install latest android emulator system images
+ENV EMULATOR_IMAGE "system-images;android-24;google_apis;x86_64"
+RUN yes | sdkmanager $EMULATOR_IMAGE --verbose
 
-# Creating sdcard image
-RUN mksdcard -l sdcard 100M sdcard.img 
+# Copy Qt library files to system folder
+RUN cp -a /opt/android/emulator/lib64/qt/lib/. /usr/lib/x86_64-linux-gnu/
 
 # Creating a emulator with sdcard
-RUN echo "no" | android create avd -f -n test -t android-24 --abi default/x86 -c sdcard.img 
+RUN echo "no" | avdmanager -v create avd -n test -k $EMULATOR_IMAGE -c 100M
 
 ADD start_emulator.sh /bin/start_emulator
 RUN chmod +x /bin/start_emulator
@@ -39,6 +49,6 @@ ADD unlock_emulator.sh /bin/unlock_emulator
 RUN chmod +x /bin/unlock_emulator
 
 #Label
-MAINTAINER Nilton Vasques <nilton.vasques@openmailbox.org>
-LABEL Version="1.3" \
-      Description="Android emulator environment"
+MAINTAINER Catbag <developer@catbag.com.br>
+LABEL Version="0.1.2" \
+      Description="Android SDK and emulator environment"
