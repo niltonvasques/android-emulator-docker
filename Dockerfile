@@ -22,6 +22,7 @@ RUN yes | sdkmanager --update --verbose
 RUN yes | sdkmanager "platform-tools" --verbose
 RUN yes | sdkmanager "platforms;android-27" --verbose
 RUN yes | sdkmanager "build-tools;27.0.0" --verbose
+RUN yes | sdkmanager "build-tools;28.0.3" --verbose
 RUN yes | sdkmanager "extras;android;m2repository" --verbose
 RUN yes | sdkmanager "extras;google;m2repository" --verbose
 
@@ -49,6 +50,6 @@ ADD unlock_emulator.sh /bin/unlock_emulator
 RUN chmod +x /bin/unlock_emulator
 
 #Label
-MAINTAINER Catbag <developer@catbag.com.br>
-LABEL Version="0.1.4" \
+MAINTAINER Nilton Vasques <nilton.vasques@gmail.com>
+LABEL Version="0.1.5" \
       Description="Android SDK and emulator environment"
