@@ -1,7 +1,5 @@
 # This Dockerfile creates a android enviroment prepared to run integration tests
-from debian:buster
-
-RUN apt-get install gnupg2 -y
+from debian:stretch
 
 # Install java 8
 RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | tee /etc/apt/sources.list.d/webupd8team-java.list \
