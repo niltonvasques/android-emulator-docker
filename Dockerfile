@@ -9,7 +9,7 @@ RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | te
 && apt-get update && apt-get install oracle-java8-installer oracle-java8-set-default -y
 
 # Install another dependencies
-RUN apt-get install git wget unzip gcc-multilib libglu1 -y
+RUN apt-get install gnupg2 git wget unzip gcc-multilib libglu1 -y
 
 #Install Android
 ENV ANDROID_HOME /opt/android
