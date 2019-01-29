@@ -1,5 +1,7 @@
 # This Dockerfile creates a android enviroment prepared to run integration tests
-from debian:jessie
+from debian:buster
+
+RUN apt-get update && apt-get install gnupg -y
 
 # Install java 8
 RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | tee /etc/apt/sources.list.d/webupd8team-java.list \
@@ -9,7 +11,7 @@ RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | te
 && apt-get update && apt-get install oracle-java8-installer oracle-java8-set-default -y
 
 # Install another dependencies
-RUN apt-get install git wget unzip gcc-multilib libglu1 -y
+RUN apt-get install gnupg2 git wget unzip gcc-multilib libglu1 -y
 
 #Install Android
 ENV ANDROID_HOME /opt/android
@@ -50,6 +52,6 @@ ADD unlock_emulator.sh /bin/unlock_emulator
 RUN chmod +x /bin/unlock_emulator
 
 #Label
-MAINTAINER Nilton Vasques <nilton.vasques@gmail.com>
-LABEL Version="0.1.5" \
+MAINTAINER Flavio Kreis <flaviokreis@gmail.com>
+LABEL Version="0.1.7" \
       Description="Android SDK and emulator environment"
