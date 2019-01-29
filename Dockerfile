@@ -52,6 +52,6 @@ ADD unlock_emulator.sh /bin/unlock_emulator
 RUN chmod +x /bin/unlock_emulator
 
 #Label
-MAINTAINER Flavio Kreis <flaviokreis@gmail.com>
+MAINTAINER Nilton Vasques <nilton.vasques@gmail.com>
 LABEL Version="0.1.7" \
       Description="Android SDK and emulator environment"
