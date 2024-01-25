@@ -4,11 +4,11 @@ from debian:buster
 RUN apt-get update && apt-get install gnupg -y
 
 # Install java 11
-RUN apt-get install software-properties-common -y
-RUN add-apt-repository -y ppa:linuxuprising/java
-RUN apt-get install openjdk-11-jdk -y
-ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
-ENV PATH=/usr/local/openjdk-11/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+RUN apt -y install wget curl
+RUN wget https://download.oracle.com/java/17/latest/jdk-17_linux-x64_bin.deb
+RUN apt install ./jdk-17_linux-x64_bin.deb
+ENV JAVA_HOME=/usr/lib/jvm/jdk-17-oracle-x64/
+ENV PATH=/usr/local/openjdk-17/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 # Install another dependencies
 RUN apt-get install gnupg2 git wget unzip gcc-multilib libglu1 -y
@@ -23,7 +23,7 @@ RUN wget --quiet --output-document=cmdline-tools.zip https://dl.google.com/andro
 RUN mkdir -p ${ANDROID_SDK_HOME}/cmdline-tools
 RUN unzip -d ${ANDROID_SDK_HOME}/cmdline-tools cmdline-tools.zip
 RUN rm cmdline-tools.zip
-ENV PATH=/usr/lib/android-sdk/cmdline-tools/tools/bin:/usr/local/openjdk-11/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV PATH=/usr/lib/android-sdk/cmdline-tools/tools/bin:/usr/local/openjdk-17/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 ##Install Android Tools
 RUN yes | sdkmanager --update --verbose
@@ -32,6 +32,7 @@ RUN yes | sdkmanager "platforms;android-27" --verbose
 RUN yes | sdkmanager "build-tools;27.0.0" --verbose
 RUN yes | sdkmanager "build-tools;28.0.3" --verbose
 RUN yes | sdkmanager "build-tools;31.0.0" --verbose
+RUN yes | sdkmanager "build-tools;33.0.0" --verbose
 RUN yes | sdkmanager "extras;android;m2repository" --verbose
 RUN yes | sdkmanager "extras;google;m2repository" --verbose
 
