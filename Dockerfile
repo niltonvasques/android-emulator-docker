@@ -1,17 +1,14 @@
-# This Dockerfile creates a android enviroment prepared to run integration tests
 from debian:buster
 
-RUN apt-get update && apt-get install gnupg -y
-
-# Install java 11
-RUN apt -y install wget curl
-RUN wget https://download.oracle.com/java/22/latest/jdk-22_linux-x64_bin.deb
-RUN apt install ./jdk-22_linux-x64_bin.deb
-ENV JAVA_HOME=/usr/lib/jvm/jdk-22-oracle-x64/
-ENV PATH=$JAVA_HOME/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-
 # Install another dependencies
-RUN apt-get install gnupg2 git wget unzip gcc-multilib libglu1 -y
+RUN apt-get update && apt-get install gnupg gnupg2 git wget unzip gcc-multilib libglu1 -y
+
+# Install java 22
+RUN apt -y install wget curl
+RUN wget https://download.oracle.com/java/22/archive/jdk-22.0.2_linux-x64_bin.deb
+RUN dpkg -i ./jdk-22.0.2_linux-x64_bin.deb
+ENV JAVA_HOME=/usr/lib/jvm/jdk-22.0.2-oracle-x64/
+ENV PATH=/usr/lib/jvm/jdk-22.0.2-oracle-x64/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 ##Install Android
 # ENV ANDROID_HOME /opt/android
@@ -37,6 +34,7 @@ RUN yes | sdkmanager "build-tools;35.0.0" --verbose
 RUN yes | sdkmanager "platforms;android-35" --verbose
 RUN yes | sdkmanager "extras;android;m2repository" --verbose
 RUN yes | sdkmanager "extras;google;m2repository" --verbose
+RUN yes | sdkmanager "emulator" --verbose  # Install the emulator
 
 ## Add platform-tools and emulator to path
 ENV PATH $PATH:$ANDROID_SDK_HOME/platform-tools
