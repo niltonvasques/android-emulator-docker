@@ -1,16 +1,16 @@
 # This Dockerfile creates a android enviroment prepared to run integration tests
-from debian:buster
+FROM debian:buster
 
 RUN apt-get update && apt-get install gnupg -y
 
 # Install java 11
 RUN apt -y install wget curl
-RUN wget https://download.oracle.com/java/17/latest/jdk-17_linux-x64_bin.deb
-RUN apt install ./jdk-17_linux-x64_bin.deb
-ENV JAVA_HOME=/usr/lib/jvm/jdk-17-oracle-x64/
-ENV PATH=/usr/local/openjdk-17/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+RUN wget https://download.oracle.com/java/22/latest/jdk-22_linux-x64_bin.deb
+RUN apt install ./jdk-22_linux-x64_bin.deb
+ENV JAVA_HOME=/usr/lib/jvm/jdk-22-oracle-x64/
+ENV PATH=$JAVA_HOME/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-# Install another dependencies
+# Install other dependencies
 RUN apt-get install gnupg2 git wget unzip gcc-multilib libglu1 -y
 
 ##Install Android
@@ -23,9 +23,9 @@ RUN wget --quiet --output-document=cmdline-tools.zip https://dl.google.com/andro
 RUN mkdir -p ${ANDROID_SDK_HOME}/cmdline-tools
 RUN unzip -d ${ANDROID_SDK_HOME}/cmdline-tools cmdline-tools.zip
 RUN rm cmdline-tools.zip
-ENV PATH=/usr/lib/android-sdk/cmdline-tools/tools/bin:/usr/local/openjdk-17/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV PATH=$ANDROID_SDK_HOME/cmdline-tools/tools/bin:$JAVA_HOME/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-##Install Android Tools
+## Install Android Tools
 RUN yes | sdkmanager --update --verbose
 RUN yes | sdkmanager "platform-tools" --verbose
 RUN yes | sdkmanager "platforms;android-27" --verbose
@@ -33,6 +33,8 @@ RUN yes | sdkmanager "build-tools;27.0.0" --verbose
 RUN yes | sdkmanager "build-tools;28.0.3" --verbose
 RUN yes | sdkmanager "build-tools;31.0.0" --verbose
 RUN yes | sdkmanager "build-tools;33.0.0" --verbose
+RUN yes | sdkmanager "build-tools;35.0.0" --verbose
+RUN yes | sdkmanager "platforms;android-35" --verbose
 RUN yes | sdkmanager "extras;android;m2repository" --verbose
 RUN yes | sdkmanager "extras;google;m2repository" --verbose
 
@@ -59,7 +61,7 @@ RUN chmod +x /bin/wait_emulator
 ADD unlock_emulator.sh /bin/unlock_emulator
 RUN chmod +x /bin/unlock_emulator
 
-#Label
+# Label
 MAINTAINER Nilton Vasques <nilton.vasques@gmail.com>
-LABEL Version="0.1.7" \
+LABEL Version="0.1.8" \
       Description="Android SDK and emulator environment"
