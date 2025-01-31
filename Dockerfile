@@ -1,5 +1,5 @@
 # This Dockerfile creates a android enviroment prepared to run integration tests
-FROM debian:buster
+from debian:buster
 
 RUN apt-get update && apt-get install gnupg -y
 
@@ -10,7 +10,7 @@ RUN apt install ./jdk-22_linux-x64_bin.deb
 ENV JAVA_HOME=/usr/lib/jvm/jdk-22-oracle-x64/
 ENV PATH=$JAVA_HOME/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-# Install other dependencies
+# Install another dependencies
 RUN apt-get install gnupg2 git wget unzip gcc-multilib libglu1 -y
 
 ##Install Android
@@ -61,7 +61,7 @@ RUN chmod +x /bin/wait_emulator
 ADD unlock_emulator.sh /bin/unlock_emulator
 RUN chmod +x /bin/unlock_emulator
 
-# Label
+#Label
 MAINTAINER Nilton Vasques <nilton.vasques@gmail.com>
 LABEL Version="0.1.8" \
       Description="Android SDK and emulator environment"
