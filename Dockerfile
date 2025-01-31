@@ -1,3 +1,4 @@
+# This Dockerfile creates a android enviroment prepared to run integration tests
 from debian:buster
 
 # Install another dependencies
