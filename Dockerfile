@@ -1,23 +1,20 @@
 # This Dockerfile creates a android enviroment prepared to run integration tests
-from debian:buster
+FROM debian:bookworm
 
 # Install another dependencies
-RUN apt-get update && apt-get install gnupg gnupg2 git wget unzip gcc-multilib libglu1 -y
+RUN apt-get update && apt-get install gnupg gnupg2 git wget unzip gcc-multilib libglu1 curl -y
 
 # Install java 22
-RUN apt -y install wget curl
 RUN wget https://download.oracle.com/java/22/archive/jdk-22.0.2_linux-x64_bin.deb
 RUN dpkg -i ./jdk-22.0.2_linux-x64_bin.deb
 ENV JAVA_HOME=/usr/lib/jvm/jdk-22.0.2-oracle-x64/
 ENV PATH=/usr/lib/jvm/jdk-22.0.2-oracle-x64/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 ##Install Android
-# ENV ANDROID_HOME /opt/android
 ENV ANDROID_SDK_HOME=/usr/lib/android-sdk
 ENV ANDROID_SDK_ROOT=/usr/lib/android-sdk
 RUN wget --quiet --output-document=cmdline-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-6609375_latest.zip
 # RUN wget -O android-tools.zip https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip --show-progress \
-# && unzip android-tools.zip -d $ANDROID_HOME && rm android-tools.zip
 RUN mkdir -p ${ANDROID_SDK_HOME}/cmdline-tools
 RUN unzip -d ${ANDROID_SDK_HOME}/cmdline-tools cmdline-tools.zip
 RUN rm cmdline-tools.zip
