@@ -1,0 +1,24 @@
+name: publish-latest
+
+on:
+  push:
+
+jobs:
+  publish-speedtest-monitor-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v2
+      - name: Login to Github Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push Docker image
+        run: |
+          docker build . --tag ghcr.io/gustoliveira/android-emulator-docker:latest
+          docker push ghcr.io/gustoliveira/android-emulator-docker:latest
+
